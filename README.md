@@ -75,7 +75,7 @@ In case docker is showing any issues or errors, please try following:
 After downloading/cloning the mnotes,
 
 ```
-$ cd mnotes
+$ cd thozha-app
 $ docker run --rm -v $(pwd):/app composer install
 $ sudo chown -R dev:dev .
 ```
