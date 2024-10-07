@@ -98,7 +98,7 @@ sudo mv composer.phar /usr/local/bin/composer
 Add following lines in the windows host, if working from WSL
 <wsl ip> - run ipconfig in cmd
 ```
-# Added for mnotes
+# Added for thozha
 <wsl ip> thozha.local
 <wsl ip> api.thozha.local
 <wsl ip> ws.thozha.local
