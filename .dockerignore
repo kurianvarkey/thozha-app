@@ -1,0 +1,5 @@
+temp
+pgsql
+*/vendor*
+*.md
+!README.md
