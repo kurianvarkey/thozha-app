@@ -1,0 +1,71 @@
+#!/bin/bash
+#Script powered by net4ideas.com
+
+VERION_PATTERN="[0-9]\.(.+)"
+JIRA_PATTERN="[A-Z]{1,5}+-[0-9]{1,5}"
+COMMIT_TYPE_PATTERN="(feat|fix|update|refactor|db|docs|build|ci|perf|revert|chore|style|test|wip)"
+PATTERN="^\[$VERION_PATTERN\]\[$COMMIT_TYPE_PATTERN\]\[$JIRA_PATTERN\]+: .+$"
+PATTERN_STRING_MATCH="^\[(.+)\]\[(.+)\]\[(.+)\]"
+
+commit=$(head -1 $1)
+#branchPath=$(git symbolic-ref --short HEAD)
+# will try to get the jira id from branch name 
+#jiraBranchName="${BRANCH_NAME##*/}"
+
+if ! [[ $commit =~ $PATTERN ]]; then
+    echo -e "\e[31mThe commit message does not meet the commit standard. Commit message should have version, type, Jira ticket id & commit message. If there is no Jira ticket id, please use [SS-01]\e[0m" 
+    echo "***********************************************************************"  
+    echo "Example commit message looks like: "
+	echo "  [1.x][feat][TS-1]: New files added"
+	echo "  * Add new docker file"
+    echo "***********************************************************************"
+    echo "Here are the list of supported commit types:"
+    echo -e "\e[32mfeat (new feature)
+fix (bug fix)
+refactor (refactoring code)
+update (Updates with new code)
+db (database related tasks)
+docs (changes to documentation)
+build (building new release)
+ci (ci/cd pipeline tasks)
+perf (performance tasks)
+revert (reverting a change or commit)
+chore (updating grunt tasks etc; no production code change)
+style (formatting, missing semi colons, etc; no code change)
+test (adding or refactoring tests; no production code change)
+wip (work in progress commit to be squashed — do not push!)\e[0m 
+"
+    echo "Required format:"
+	echo "  [version][type][Jira ticket id]: Commit message"
+	echo "  * Commit message"
+	echo "  * Commit message"
+
+    echo "***********************************************************************"     
+    if ! [ -z "$commit" ]; then    
+        echo -e "Your commit message: \e[33m"     
+        echo -e "  $commit\e[0m"       
+        if [[ $commit =~ $PATTERN_STRING_MATCH ]]; then
+            matches=(${BASH_REMATCH[1]} ${BASH_REMATCH[2]} ${BASH_REMATCH[3]})
+        fi     
+
+        if ! [ -z $matches ]; then                
+            if ! [[ ${matches[0]} =~ $VERION_PATTERN ]]; then
+                echo -e "\e[31mVersion '${matches[0]}' is not in valid format.\e[0m" 
+            fi
+
+            if ! [[ ${matches[1]} =~ ^$COMMIT_TYPE_PATTERN$ ]]; then
+                echo -e "\e[31mCommit type '${matches[1]}' not supported.\e[0m" 
+            fi
+
+            if ! [[ ${matches[2]} =~ $JIRA_PATTERN ]]; then
+                echo -e "\e[31mJira id '${matches[2]}' is not in valid format.\e[0m" 
+            fi
+        fi
+    else
+        echo -e "\e[31mYour commit message is empty\e[0m"   
+    fi
+
+    echo -e "\e[0m***********************************************************************" 
+
+	exit 1
+fi

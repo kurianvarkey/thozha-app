@@ -1,0 +1,10 @@
+#!/bin/bash
+#Script powered by net4ideas.com
+
+# Run tests before commit
+#php artisan test --profile --coverage --min=80 > /dev/null 2>&1
+
+#if [ $? -ne 0 ]; then
+  #echo "Tests failed. Fix the issues before committing."
+  #exit 1
+#fi

@@ -1,0 +1,10 @@
+#!/bin/bash
+#Script powered by net4ideas.com
+
+# Run PHP CS Fixer to check code formatting
+./vendor/bin/pint --test > /dev/null 2>&1
+
+if [ $? -ne 0 ]; then
+  echo "Code formatting issues found. Please fix them before committing. Please run './vendor/bin/pint --test' to see the details and run './vendor/bin/pint' to fix them"
+  exit 1
+fi

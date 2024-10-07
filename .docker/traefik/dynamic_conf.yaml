@@ -1,0 +1,12 @@
+http:
+  routers:
+    traefik:
+      rule: "Host(`dashboard.thozha.local`)"
+      service: "api@internal"
+      tls: true
+      entrypoints: websecure
+
+tls:
+  certificates:
+    - certFile: "/etc/certs/thozha.local+4.pem"
+      keyFile: "/etc/certs/thozha.local+4-key.pem"
